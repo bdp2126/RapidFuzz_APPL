@@ -886,7 +886,7 @@ def WRatio(
         partial_token_ratio(s1, s2, score_cutoff=score_cutoff, processor=None) * UNBASE_SCALE * PARTIAL_SCALE,
     )
 
-def WRatio_no_set_a(
+def WRatio_no_set(
     s1,
     s2,
     *,
@@ -959,7 +959,7 @@ def WRatio_no_set_a(
         partial_token_ratio(s1, s2, score_cutoff=score_cutoff, processor=None) * UNBASE_SCALE * PARTIAL_SCALE,
     )
 
-def WRatio_no_set_b(
+def WRatio_no_set_both(
     s1,
     s2,
     *,
@@ -1095,5 +1095,6 @@ add_scorer_attrs(partial_token_set_ratio, fuzz_attribute)
 add_scorer_attrs(partial_token_ratio, fuzz_attribute)
 add_scorer_attrs(WRatio, fuzz_attribute)
 add_scorer_attrs(WRatio_no_set, fuzz_attribute)
+add_scorer_attrs(WRatio_no_set_both, fuzz_attribute)
 add_scorer_attrs(WRatio_no_set_no_partial, fuzz_attribute)
 add_scorer_attrs(QRatio, fuzz_attribute)
