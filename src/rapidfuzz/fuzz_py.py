@@ -739,6 +739,80 @@ def partial_token_ratio(
     )
 
 
+def WRatio_no_set_no_partial(
+    s1,
+    s2,
+    *,
+    processor=None,
+    score_cutoff=None,
+):
+    """
+    Calculates a weighted ratio based on the other ratio algorithms
+
+    Parameters
+    ----------
+    s1 : str
+        First string to compare.
+    s2 : str
+        Second string to compare.
+    processor: callable, optional
+        Optional callable that is used to preprocess the strings before
+        comparing them. Default is None, which deactivates this behaviour.
+    score_cutoff : float, optional
+        Optional argument for a score threshold as a float between 0 and 100.
+        For ratio < score_cutoff 0 is returned instead. Default is 0,
+        which deactivates this behaviour.
+
+    Returns
+    -------
+    similarity : float
+        similarity between s1 and s2 as a float between 0 and 100
+
+    Notes
+    -----
+    .. image:: img/WRatio.svg
+    """
+    setupPandas()
+    if is_none(s1) or is_none(s2):
+        return 0
+
+    UNBASE_SCALE = 0.95
+
+    if processor is not None:
+        s1 = processor(s1)
+        s2 = processor(s2)
+
+    # in FuzzyWuzzy this returns 0. For sake of compatibility return 0 here as well
+    # see https://github.com/rapidfuzz/RapidFuzz/issues/110
+    if not s1 or not s2:
+        return 0
+
+    if score_cutoff is None:
+        score_cutoff = 0
+
+    len1 = len(s1)
+    len2 = len(s2)
+    len_ratio = len1 / len2 if len1 > len2 else len2 / len1
+
+    end_ratio = ratio(s1, s2, score_cutoff=score_cutoff)
+    #if len_ratio < 1.5:
+    score_cutoff = max(score_cutoff, end_ratio) / UNBASE_SCALE
+    return max(
+        end_ratio,
+        token_sort_ratio(s1, s2, score_cutoff=score_cutoff, processor=None) * UNBASE_SCALE,
+    )
+    '''
+    PARTIAL_SCALE = 0.9 if len_ratio <= 8.0 else 0.6
+    score_cutoff = max(score_cutoff, end_ratio) / PARTIAL_SCALE
+    end_ratio = max(end_ratio, partial_ratio(s1, s2, score_cutoff=score_cutoff) * PARTIAL_SCALE)
+
+    score_cutoff = max(score_cutoff, end_ratio) / UNBASE_SCALE
+    return max(
+        end_ratio,
+        partial_token_ratio(s1, s2, score_cutoff=score_cutoff, processor=None) * UNBASE_SCALE * PARTIAL_SCALE,
+    )
+    '''
+
 def WRatio(
     s1,
     s2,
@@ -801,7 +875,7 @@ def WRatio(
             end_ratio,
             token_ratio(s1, s2, score_cutoff=score_cutoff, processor=None) * UNBASE_SCALE,
         )
-
+    
     PARTIAL_SCALE = 0.9 if len_ratio <= 8.0 else 0.6
     score_cutoff = max(score_cutoff, end_ratio) / PARTIAL_SCALE
     end_ratio = max(end_ratio, partial_ratio(s1, s2, score_cutoff=score_cutoff) * PARTIAL_SCALE)
@@ -810,6 +884,152 @@ def WRatio(
     return max(
         end_ratio,
         partial_token_ratio(s1, s2, score_cutoff=score_cutoff, processor=None) * UNBASE_SCALE * PARTIAL_SCALE,
+    )
+
+def WRatio_no_set_a(
+    s1,
+    s2,
+    *,
+    processor=None,
+    score_cutoff=None,
+):
+    """
+    Calculates a weighted ratio based on the other ratio algorithms
+
+    Parameters
+    ----------
+    s1 : str
+        First string to compare.
+    s2 : str
+        Second string to compare.
+    processor: callable, optional
+        Optional callable that is used to preprocess the strings before
+        comparing them. Default is None, which deactivates this behaviour.
+    score_cutoff : float, optional
+        Optional argument for a score threshold as a float between 0 and 100.
+        For ratio < score_cutoff 0 is returned instead. Default is 0,
+        which deactivates this behaviour.
+
+    Returns
+    -------
+    similarity : float
+        similarity between s1 and s2 as a float between 0 and 100
+
+    Notes
+    -----
+    .. image:: img/WRatio.svg
+    """
+    setupPandas()
+    if is_none(s1) or is_none(s2):
+        return 0
+
+    UNBASE_SCALE = 0.95
+
+    if processor is not None:
+        s1 = processor(s1)
+        s2 = processor(s2)
+
+    # in FuzzyWuzzy this returns 0. For sake of compatibility return 0 here as well
+    # see https://github.com/rapidfuzz/RapidFuzz/issues/110
+    if not s1 or not s2:
+        return 0
+
+    if score_cutoff is None:
+        score_cutoff = 0
+
+    len1 = len(s1)
+    len2 = len(s2)
+    len_ratio = len1 / len2 if len1 > len2 else len2 / len1
+
+    end_ratio = ratio(s1, s2, score_cutoff=score_cutoff)
+    if len_ratio < 1.5:
+        score_cutoff = max(score_cutoff, end_ratio) / UNBASE_SCALE
+        return max(
+            end_ratio,
+            token_sort_ratio(s1, s2, score_cutoff=score_cutoff, processor=None) * UNBASE_SCALE,
+        )
+    
+    PARTIAL_SCALE = 0.9 if len_ratio <= 8.0 else 0.6
+    score_cutoff = max(score_cutoff, end_ratio) / PARTIAL_SCALE
+    end_ratio = max(end_ratio, partial_ratio(s1, s2, score_cutoff=score_cutoff) * PARTIAL_SCALE)
+
+    score_cutoff = max(score_cutoff, end_ratio) / UNBASE_SCALE
+    return max(
+        end_ratio,
+        partial_token_ratio(s1, s2, score_cutoff=score_cutoff, processor=None) * UNBASE_SCALE * PARTIAL_SCALE,
+    )
+
+def WRatio_no_set_b(
+    s1,
+    s2,
+    *,
+    processor=None,
+    score_cutoff=None,
+):
+    """
+    Calculates a weighted ratio based on the other ratio algorithms
+
+    Parameters
+    ----------
+    s1 : str
+        First string to compare.
+    s2 : str
+        Second string to compare.
+    processor: callable, optional
+        Optional callable that is used to preprocess the strings before
+        comparing them. Default is None, which deactivates this behaviour.
+    score_cutoff : float, optional
+        Optional argument for a score threshold as a float between 0 and 100.
+        For ratio < score_cutoff 0 is returned instead. Default is 0,
+        which deactivates this behaviour.
+
+    Returns
+    -------
+    similarity : float
+        similarity between s1 and s2 as a float between 0 and 100
+
+    Notes
+    -----
+    .. image:: img/WRatio.svg
+    """
+    setupPandas()
+    if is_none(s1) or is_none(s2):
+        return 0
+
+    UNBASE_SCALE = 0.95
+
+    if processor is not None:
+        s1 = processor(s1)
+        s2 = processor(s2)
+
+    # in FuzzyWuzzy this returns 0. For sake of compatibility return 0 here as well
+    # see https://github.com/rapidfuzz/RapidFuzz/issues/110
+    if not s1 or not s2:
+        return 0
+
+    if score_cutoff is None:
+        score_cutoff = 0
+
+    len1 = len(s1)
+    len2 = len(s2)
+    len_ratio = len1 / len2 if len1 > len2 else len2 / len1
+
+    end_ratio = ratio(s1, s2, score_cutoff=score_cutoff)
+    if len_ratio < 1.5:
+        score_cutoff = max(score_cutoff, end_ratio) / UNBASE_SCALE
+        return max(
+            end_ratio,
+            token_sort_ratio(s1, s2, score_cutoff=score_cutoff, processor=None) * UNBASE_SCALE,
+        )
+    
+    PARTIAL_SCALE = 0.9 if len_ratio <= 8.0 else 0.6
+    score_cutoff = max(score_cutoff, end_ratio) / PARTIAL_SCALE
+    end_ratio = max(end_ratio, partial_ratio(s1, s2, score_cutoff=score_cutoff) * PARTIAL_SCALE)
+
+    score_cutoff = max(score_cutoff, end_ratio) / UNBASE_SCALE
+    return max(
+        end_ratio,
+        partial_token_sort_ratio(s1, s2, score_cutoff=score_cutoff, processor=None) * UNBASE_SCALE * PARTIAL_SCALE,
     )
 
 
@@ -874,4 +1094,6 @@ add_scorer_attrs(partial_token_sort_ratio, fuzz_attribute)
 add_scorer_attrs(partial_token_set_ratio, fuzz_attribute)
 add_scorer_attrs(partial_token_ratio, fuzz_attribute)
 add_scorer_attrs(WRatio, fuzz_attribute)
+add_scorer_attrs(WRatio_no_set, fuzz_attribute)
+add_scorer_attrs(WRatio_no_set_no_partial, fuzz_attribute)
 add_scorer_attrs(QRatio, fuzz_attribute)

@@ -172,6 +172,22 @@ def WRatio(
     score_cutoff: float | None = 0,
 ) -> float: ...
 @overload
+def WRatio_no_set_no_partial(
+    s1: _UnprocessedType1,
+    s2: _UnprocessedType2,
+    *,
+    processor: Callable[[_UnprocessedType1 | _UnprocessedType2], Sequence[Hashable]],
+    score_cutoff: float | None = 0,
+) -> float: ...
+@overload
+def WRatio_no_set(
+    s1: _UnprocessedType1,
+    s2: _UnprocessedType2,
+    *,
+    processor: Callable[[_UnprocessedType1 | _UnprocessedType2], Sequence[Hashable]],
+    score_cutoff: float | None = 0,
+) -> float: ...
+@overload
 def QRatio(
     s1: Sequence[Hashable],
     s2: Sequence[Hashable],

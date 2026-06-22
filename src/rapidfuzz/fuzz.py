@@ -11,6 +11,8 @@ from rapidfuzz._feature_detector import AVX2, SSE2, supports
 __all__ = [
     "QRatio",
     "WRatio",
+    "WRatio_no_set",
+    "WRatio_no_set_no_partial",
     "partial_ratio",
     "partial_ratio_alignment",
     "partial_token_ratio",
@@ -30,6 +32,8 @@ if _impl == "cpp":
             from rapidfuzz.fuzz_cpp_avx2 import (  # pyright: ignore[reportMissingImports]
                 QRatio,
                 WRatio,
+                WRatio_no_set,
+                WRatio_no_set_no_partial,
                 partial_ratio,
                 partial_ratio_alignment,
                 partial_token_ratio,
@@ -48,6 +52,8 @@ if _impl == "cpp":
             from rapidfuzz.fuzz_cpp_sse2 import (  # pyright: ignore[reportMissingImports]
                 QRatio,
                 WRatio,
+                WRatio_no_set,
+                WRatio_no_set_no_partial,                
                 partial_ratio,
                 partial_ratio_alignment,
                 partial_token_ratio,
@@ -65,6 +71,8 @@ if _impl == "cpp":
         from rapidfuzz.fuzz_cpp import (  # pyright: ignore[reportMissingImports]
             QRatio,
             WRatio,
+            WRatio_no_set,
+            WRatio_no_set_no_partial,            
             partial_ratio,
             partial_ratio_alignment,
             partial_token_ratio,
@@ -79,6 +87,8 @@ elif _impl == "python":
     from rapidfuzz.fuzz_py import (
         QRatio,
         WRatio,
+        WRatio_no_set,
+        WRatio_no_set_no_partial,
         partial_ratio,
         partial_ratio_alignment,
         partial_token_ratio,
@@ -96,6 +106,8 @@ else:
             from rapidfuzz.fuzz_cpp_avx2 import (  # pyright: ignore[reportMissingImports]
                 QRatio,
                 WRatio,
+                WRatio_no_set,
+                WRatio_no_set_no_partial,
                 partial_ratio,
                 partial_ratio_alignment,
                 partial_token_ratio,
@@ -114,6 +126,8 @@ else:
             from rapidfuzz.fuzz_cpp_sse2 import (  # pyright: ignore[reportMissingImports]
                 QRatio,
                 WRatio,
+                WRatio_no_set,
+                WRatio_no_set_no_partial,
                 partial_ratio,
                 partial_ratio_alignment,
                 partial_token_ratio,
@@ -132,6 +146,8 @@ else:
             from rapidfuzz.fuzz_cpp import (  # pyright: ignore[reportMissingImports]
                 QRatio,
                 WRatio,
+                WRatio_no_set,
+                WRatio_no_set_no_partial,
                 partial_ratio,
                 partial_ratio_alignment,
                 partial_token_ratio,
@@ -149,6 +165,8 @@ else:
         from rapidfuzz.fuzz_py import (
             QRatio,
             WRatio,
+            WRatio_no_set,
+            WRatio_no_set_no_partial,
             partial_ratio,
             partial_ratio_alignment,
             partial_token_ratio,
